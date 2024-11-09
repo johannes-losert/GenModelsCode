@@ -3,7 +3,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 # Load HTML content from file
-file_name = "sites/Compare Credit Cards & Apply Online _ Credit Karma.html"
+file_name = "../sites/Compare Credit Cards & Apply Online _ Credit Karma.html"
 with open(file_name, 'r', encoding='utf-8') as file:
     html_content = file.read()
 
@@ -75,9 +75,8 @@ for card in card_containers:
 
     # Store the extracted information in the dictionary
     cards_data[name] = {
-        "Issuer": unparsed_issuer,
-        "Credit Needed": unparsed_credit_needed,
-        "Attributes": unparsed_card_attributes
+        "issuer": unparsed_issuer,
+        "attributes": unparsed_card_attributes
     }
 
 # Get the current timestamp and format it

@@ -1,13 +1,23 @@
-# schemas.py
-
-# Import necessary libraries
 from enum import Enum
 from typing import List, Union, Optional
 from datetime import timedelta
 from collections import defaultdict
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, ConfigDict
 
-# Enums as per specifications
+class CRSchema(BaseModel):
+    name: str
+    unparsed_issuer: str
+    unparsed_credit_needed: str
+    unparsed_card_attributes: str
+    
+    model_config = ConfigDict(from_attributes=True)
+
+class CKSchema(BaseModel):
+    name: str
+    issuer: Optional[str]
+    attributes: str
+
+    model_config = ConfigDict(from_attributes=True)
 
 class Issuer(str, Enum):
     CAPITAL_ONE = "Capital One"

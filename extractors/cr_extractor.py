@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from typing import List
-from schemas import CardScrapeSchema
+from pipeline.schemas import CRSchema
 from datetime import datetime
 import pickle
 
@@ -41,7 +41,7 @@ for card in cards:
         )
 
     # Create CardScrapeSchema object for each card
-    card_data = CardScrapeSchema(
+    card_data = CRSchema(
         name=card_title.get_text(strip=True),
         description_used=description_used,
         unparsed_issuer=issuer.get_text(strip=True) if issuer else "Unknown",
