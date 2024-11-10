@@ -71,7 +71,7 @@ for card in card_containers:
             descriptions.append(list_text)
 
     # Combine all descriptions into a single string for `unparsed_card_attributes`
-    unparsed_card_attributes = " ".join(descriptions)
+    unparsed_card_attributes = ". ".join(descriptions)
 
     # Store the extracted information in the dictionary
     cards_data[name] = {

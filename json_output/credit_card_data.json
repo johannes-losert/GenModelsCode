@@ -1,0 +1,1006 @@
+{
+    "Capital One Savor Cash Rewards Credit Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 0 .",
+                "Annual fee $0.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "purchases"
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "Cash",
+                "a promotional APR",
+                "a $250 cash bonus",
+                "Great for high cash back rates .",
+                "once you spend $ 500 on purchases within the first 3 months from account opening",
+                "Great for high cash back rates.",
+                "For a limited time , earn a $ 250 cash bonus once you spend $ 500 on purchases within the first 3 months from account opening",
+                "high cash back rates",
+                "For a limited time, earn a $250 cash bonus once you spend $500 on purchases within the first 3 months from account opening",
+                "0% intro APR"
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "Credit One Bank\u00ae Wander\u00ae American Express\u00ae Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $95.",
+                "Annual fee",
+                "Annual fee $ 95 ."
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "5X points on eligible travel including flights , dining , and gas purchases .",
+                "5X points on eligible travel including flights, dining, and gas purchases.",
+                "Rewards",
+                "car rentals",
+                "5X points on eligible travel including flights, dining, and gas purchases",
+                "gas purchases",
+                "5X points on eligible travel including flights , dining , and gas purchases"
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "the Credit One Bank travel partner",
+                "using the Credit One Bank travel partner",
+                "10X points on eligible hotels and car rentals booked using the Credit One Bank travel partner.",
+                "10X points on eligible hotels and car rentals booked using the Credit One Bank travel partner ."
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "United Club\u2120 Infinite Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 525 .",
+                "Annual fee $525.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "qualifying purchases",
+                "purchases"
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [],
+            "sub_attributes": {}
+        }
+    },
+    "Yendo Vehicle Equity Mastercard\u00ae": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 40 .",
+                "Annual fee $40.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "Regular purchase"
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "Great for a car title loan alternative .",
+                "APR",
+                "Great for a car title loan alternative.",
+                "a car title loan alternative",
+                "a regular Mastercard"
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "AT&T Points Plus\u00ae Card from Citi": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee N / A. Welcome bonus $ 100 .",
+                "Annual fee N/A. Welcome bonus $100."
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "your qualifying AT & T Wireless bills",
+                "Annual fee N/A. Welcome bonus",
+                "eligible spend",
+                "your qualifying AT&T Wireless bills",
+                "Rewards rate 1% - 3% Cash back.",
+                "Rewards",
+                "Rewards rate 1 % - 3 % Cash back ."
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "Earn a $ 100 Statement Credit after spending $ 1,000 in qualifying activities in the first 3 months of account opening .",
+                "Earn a $100 Statement Credit after spending $1,000 in qualifying activities in the first 3 months of account opening.",
+                "a $100 Statement Credit"
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "Capital One Venture Rewards Credit Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "once you spend $ 4,000 on purchases within 3 months from account opening , equal to $ 750 in travel",
+                "Great for high flat - rate travel rewards .",
+                "purchases",
+                "high flat-rate travel rewards",
+                "Enjoy a one - time bonus of 75,000 miles once you spend $ 4,000 on purchases within 3 months from account opening , equal to $ 750 in travel .",
+                "Great for high flat-rate travel rewards.",
+                "Enjoy a one-time bonus of 75,000 miles once you spend $4,000 on purchases within 3 months from account opening, equal to $750 in travel."
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "a one-time bonus",
+                "Annual fee $95.",
+                "Rewards",
+                "Annual fee $ 95 ."
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "IHG One Rewards Premier Credit Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 99 .",
+                "Annual fee $99.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "Plus, enjoy a fourth reward night free when you redeem points for a consecutive four-night IHG\u00ae hotel stay..",
+                "Plus, enjoy a fourth reward night free when you redeem points for a consecutive four-night IHG\u00ae hotel stay.",
+                "Plus , enjoy a fourth reward night free when you redeem points for a consecutive four - night IHG \u00ae hotel stay .",
+                "when you redeem points for a consecutive four - night IHG \u00ae hotel stay",
+                "Plus , enjoy a fourth reward night free when you redeem points for a consecutive four - night IHG \u00ae hotel stay ..",
+                "Rewards"
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "a fourth reward",
+                "Earn 140,000 Bonus Points .",
+                "points",
+                "Welcome bonus 140,000 Points .",
+                "Earn 140,000 Bonus Points",
+                "Welcome bonus 140,000 Points.",
+                "Earn 140,000 Bonus Points.",
+                "Editors ' bonus estimate up to $ 910 .",
+                "Welcome bonus",
+                "Editors' bonus estimate up to $910."
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "Mission Lane Visa\u00ae Credit Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 39 .",
+                "Annual fee $39.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "Regular purchase APR 33.99%* Variable.",
+                "Regular purchase",
+                "Regular purchase APR 33.99 % * Variable ."
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "Be automatically considered for a higher credit line in as few as 7 months .",
+                "a higher credit line",
+                "Great for automatic credit limit increases.",
+                "Be automatically considered for a higher credit line in as few as 7 months.",
+                "Great for automatic credit limit increases ."
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "Merrick Bank Double Your Line\u00ae  Mastercard\u00ae": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 0 .",
+                "Annual fee $0.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "Regular purchase APR 29.70%* Variable.",
+                "Regular purchase APR 29.70 % * Variable .",
+                "Regular purchase"
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "your credit score",
+                "See if you are Pre-Qualified in less than 60 seconds without harming your credit score.. Initial Credit Line $750 - $1,500, Doubling to $1,500 - $3,000",
+                "See if you are Pre-Qualified in less than 60 seconds without harming your credit score.. Initial Credit Line $750 - $1,500, Doubling to $1,500 - $3,000.",
+                "See if you are Pre - Qualified in less than 60 seconds without harming your credit score .. Initial Credit Line $ 750 - $ 1,500 , Doubling to $ 1,500 - $ 3,000",
+                "See if you are Pre - Qualified in less than 60 seconds without harming your credit score .. Initial Credit Line $ 750 - $ 1,500 , Doubling to $ 1,500 - $ 3,000 .",
+                "harming your credit score",
+                "Initial Credit Line"
+            ],
+            "sub_attributes": {}
+        }
+    },
+    "Petal\u00ae 1 Rise Visa\u00ae Credit Card": {
+        "Annual Fee": {
+            "text": [
+                "Annual fee $ 59 .",
+                "Annual fee $59.",
+                "Annual fee"
+            ],
+            "sub_attributes": {}
+        },
+        "Sign-on Bonus": {
+            "text": [],
+            "sub_attributes": {
+                "purchase_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "condition_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "timeframe": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_type": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Reward Category Map": {
+            "text": [],
+            "sub_attributes": {
+                "category": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_unit": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_amount": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "reward_threshold": {
+                    "text": [],
+                    "sub_attributes": {
+                        "on_up_to_purchase_amount_usd": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "per_timeframe_num_months": {
+                            "text": [],
+                            "sub_attributes": {}
+                        },
+                        "fallback_reward_amount": {
+                            "text": [],
+                            "sub_attributes": {}
+                        }
+                    }
+                }
+            }
+        },
+        "APR": {
+            "text": [],
+            "sub_attributes": {
+                "apr": {
+                    "text": [],
+                    "sub_attributes": {}
+                },
+                "type": {
+                    "text": [],
+                    "sub_attributes": {}
+                }
+            }
+        },
+        "Benefits": {
+            "text": [
+                "Great for access to unsecured credit .",
+                "Great for access to unsecured credit."
+            ],
+            "sub_attributes": {}
+        },
+        "Credit Needed": {
+            "text": [
+                "unsecured credit"
+            ],
+            "sub_attributes": {}
+        }
+    }
+}

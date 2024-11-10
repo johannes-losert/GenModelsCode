@@ -2,12 +2,17 @@ import numpy as np
 import json
 import pickle
 import logging
-from datetime import timedelta, datetime
+import random
+from datetime import datetime
 from pyscipopt import Model, quicksum
-from sklearn.metrics.pairwise import cosine_similarity
-from transformers import BertTokenizer, BertModel
-from typing import List, Dict, Union
+from sentence_transformers import SentenceTransformer, CrossEncoder
+import spacy
+import re
+from typing import List, Dict, Union, Any
 import nltk
+from transformers import TRANSFORMERS_CACHE
+import sys
+from transformers.utils import logging as transformers_logging
 
 from pydantic import ValidationError
 from pipeline.schemas import (
@@ -16,53 +21,79 @@ from pipeline.schemas import (
     CreditCardSchema, get_issuer, multiple_nearest, get_primary_reward_unit
 )
 from pipeline.schemas import CRSchema, CKSchema
+from pipeline.examples import attribute_examples
 
-logging.basicConfig(level=logging.INFO)
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+# Load nltk and spaCy for parsing
 nltk.download('punkt')
+nlp_spacy = spacy.load("en_core_web_sm")
 
-# Example sentences for each attribute to enhance embeddings
-attribute_examples = {
-    "Annual Fee": [
-        "This card has a $95 annual fee, waived for the first year.",
-        "Enjoy this card with no annual fee for life.",
-        "Annual fee of $50, which is charged monthly at $4.16."
-    ],
-    "Sign-on Bonus": [
-        "Earn a sign-on bonus of 20,000 points after spending $1,000 in the first three months.",
-        "Receive a welcome bonus of $200 once you spend $500 in the first three months.",
-        "Get 50,000 bonus miles if you spend $2,000 within the first 90 days."
-    ],
-    "Rewards": [
-        "Earn 2% cashback on all purchases.",
-        "Get 5 points per dollar spent on travel purchases.",
-        "Enjoy 3% cash back on groceries and dining."
-    ],
-    "APR": [
-        "This card has a 0% introductory APR for the first 12 months.",
-        "Enjoy a 15.99% variable APR based on your creditworthiness.",
-        "APR is 18.24% for balance transfers and purchases."
-    ],
-    "Benefits": [
-        "Includes travel insurance and purchase protection.",
-        "Gain access to airport lounges worldwide.",
-        "Enjoy complimentary cell phone protection."
-    ],
-    "Credit Needed": [
-        "This card is available to individuals with excellent credit.",
-        "Applicants need good to excellent credit for approval.",
-        "Designed for people with fair to good credit."
-    ]
+# Load models
+try:
+    sentence_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
+    cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', device='cpu')
+    logger.info("Models loaded successfully.")
+except Exception as e:
+    logger.error("Error loading SentenceTransformer or CrossEncoder model: %s", e)
+    sys.exit("Model loading failed. Exiting.")
+
+# Define attribute hierarchy as a nested dictionary
+attribute_hierarchy = {
+    'Annual Fee': {},
+    'Sign-on Bonus': {
+        'purchase_type': {},
+        'condition_amount': {},
+        'timeframe': {},
+        'reward_type': {},
+        'reward_amount': {}
+    },
+    'Reward Category Map': {
+        'category': {},
+        'reward_unit': {},
+        'reward_amount': {},
+        'reward_threshold': {
+            'on_up_to_purchase_amount_usd': {},
+            'per_timeframe_num_months': {},
+            'fallback_reward_amount': {}
+        }
+    },
+    'APR': {
+        'apr': {},
+        'type': {}
+    },
+    'Benefits': {},
+    'Credit Needed': {}
 }
 
+def get_average_embedding(texts: List[str], model: SentenceTransformer) -> np.ndarray:
+    embeddings = model.encode(texts, convert_to_tensor=True)
+    return embeddings.mean(axis=0).cpu().numpy()
+
+def compute_cross_encoder_similarities(phrases: List[str], attribute_texts: List[str]) -> np.ndarray:
+    if not phrases or not attribute_texts:
+        return np.array([])
+
+    avg_attribute_embedding = get_average_embedding(attribute_texts, sentence_model)
+    phrase_embeddings = sentence_model.encode(phrases, convert_to_tensor=True)
+    similarities = (phrase_embeddings @ avg_attribute_embedding) / (
+        np.linalg.norm(phrase_embeddings, axis=1) * np.linalg.norm(avg_attribute_embedding)
+    )
+    similarities = similarities.cpu().numpy()
+    similarities = (similarities - np.min(similarities)) / (np.max(similarities) - np.min(similarities) + 1e-6)
+    return similarities
+
+def calculate_intra_similarity_matrix(phrases: List[str]) -> np.ndarray:
+    embeddings = sentence_model.encode(phrases, convert_to_tensor=True)
+    similarity_matrix = np.dot(embeddings, embeddings.T) / (np.linalg.norm(embeddings, axis=1)[:, None] * np.linalg.norm(embeddings, axis=1))
+    return similarity_matrix
+
 def load_data_from_pickle(pickle_path: str) -> Dict[str, Union[CRSchema, CKSchema]]:
-    """Load and return data from a pickle file, handling both CK and CRSchema formats."""
     logger.info(f"Loading data from pickle file: {pickle_path}")
-    
     with open(pickle_path, "rb") as f:
         data = pickle.load(f)
-
     valid_data = {}
     for name, card_data in data.items():
         try:
@@ -82,139 +113,149 @@ def load_data_from_pickle(pickle_path: str) -> Dict[str, Union[CRSchema, CKSchem
             else:
                 logger.warning(f"Skipping entry '{name}' due to unrecognized format.")
                 continue
-
             valid_data[name] = card
-
         except ValidationError as e:
             logger.warning(f"Skipping entry '{name}' due to validation error: {e}")
-
     logger.info(f"Loaded {len(valid_data)} valid entries from {pickle_path}")
     return valid_data
 
-def initialize_nlp_models():
-    """Initialize tokenizer and BERT models."""
-    logger.info("Initializing BERT model and tokenizer...")
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    bert_model = BertModel.from_pretrained('bert-base-uncased')
-    logger.info("BERT model and tokenizer initialized successfully.")
-    return tokenizer, bert_model
+def filter_relevant_text(subtree_text: str) -> bool:
+    unwanted_patterns = [r"^\W+$", r"^\d+$", r"^\s*$"]
+    return not any(re.search(pattern, subtree_text, re.IGNORECASE) for pattern in unwanted_patterns)
 
-def parse_text_to_sentences(text: str) -> List[str]:
-    """Parse text into sentences using nltk."""
-    sentences = nltk.sent_tokenize(text)
-    logger.info(f"Parsed text into {len(sentences)} sentences.")
-    return sentences
+def parse_text_with_spacy(text: str) -> List[str]:
+    doc = nlp_spacy(text)
+    phrases = set()
+    for sent in doc.sents:
+        if filter_relevant_text(sent.text):
+            phrases.add(sent.text.strip())
+        for np in sent.noun_chunks:
+            if filter_relevant_text(np.text):
+                phrases.add(np.text.strip())
+        for token in sent:
+            if token.dep_ in ('ROOT', 'advcl', 'xcomp', 'ccomp', 'pcomp', 'acl'):
+                subtree = ' '.join([t.text for t in token.subtree])
+                if filter_relevant_text(subtree):
+                    phrases.add(subtree.strip())
+    return list(phrases)
 
-def generate_sentence_embeddings(sentences: List[str], tokenizer, bert_model) -> List[np.ndarray]:
-    """Generate embeddings for each sentence."""
-    logger.info("Generating embeddings for sentences...")
-    embeddings = [
-        bert_model(**tokenizer(sentence, return_tensors='pt')).last_hidden_state.mean(dim=1).detach().numpy()
-        for sentence in sentences
-    ]
-    logger.info(f"Generated {len(embeddings)} embeddings for sentences.")
-    return embeddings
+def formulate_and_solve_bqp(similarities_per_attr: List[np.ndarray], attribute_paths: List[str], disjoint_constraints: Dict[str, List[str]], intra_similarity_matrices: List[np.ndarray]) -> Dict[str, List[int]]:
+    model = Model("AttributeAssignment")
+    num_phrases = len(similarities_per_attr[0])
 
-def compute_attribute_embeddings(attributes: List[str], attribute_examples: Dict[str, List[str]], tokenizer, bert_model) -> List[np.ndarray]:
-    """Compute enhanced embeddings for each attribute by including example sentences."""
-    logger.info("Computing enhanced embeddings for attributes using example sentences...")
-    enhanced_embeddings = []
-    for attribute in attributes:
-        attribute_name_inputs = tokenizer(attribute, return_tensors='pt')
-        attribute_name_outputs = bert_model(**attribute_name_inputs)
-        attribute_name_embedding = attribute_name_outputs.last_hidden_state.mean(dim=1).detach().numpy()
+    # Define variables
+    x = {(i, j): model.addVar(vtype="B", name=f"x_{i}_{j}") for i in range(num_phrases) for j in range(len(attribute_paths))}
+    num_assignments = {j: model.addVar(vtype="I", name=f"num_assignments_{j}") for j in range(len(attribute_paths))}
 
-        example_embeddings = []
-        for example in attribute_examples.get(attribute, []):
-            example_inputs = tokenizer(example, return_tensors='pt')
-            example_outputs = bert_model(**example_inputs)
-            example_embedding = example_outputs.last_hidden_state.mean(dim=1).detach().numpy()
-            example_embeddings.append(example_embedding)
+    # Objective weights
+    similarity_weight = 2
+    overassignment_penalty_weight = 1.5
 
-        if example_embeddings:
-            average_example_embedding = np.mean(example_embeddings, axis=0)
-            enhanced_embedding = (attribute_name_embedding + average_example_embedding) / 2
+    # Objective: maximize phrase-to-attribute similarity and penalize overassignment
+    objective = quicksum(similarity_weight * similarities_per_attr[j][i] * x[i, j] for j in range(len(attribute_paths)) for i in range(num_phrases))
+    objective -= overassignment_penalty_weight * quicksum(num_assignments[j] for j in range(len(attribute_paths)))
+
+    model.setObjective(objective, "maximize")
+
+    # Linear hierarchy constraints
+    for parent, sub_attrs in disjoint_constraints.items():
+        if parent and sub_attrs:
+            parent_idx = attribute_paths.index(parent)
+            for sub_attr in sub_attrs:
+                sub_attr_idx = attribute_paths.index(sub_attr)
+                for i in range(num_phrases):
+                    model.addCons(x[i, sub_attr_idx] <= x[i, parent_idx])
+
+    # Ensure only one assignment per level
+    for level, attrs in disjoint_constraints.items():
+        for i in range(num_phrases):
+            model.addCons(quicksum(x[i, attribute_paths.index(attr)] for attr in attrs if attr in attribute_paths) <= 1)
+
+    # Constraints for auxiliary variables: enforce num_assignments[j] as the count of assignments for each attribute
+    for j in range(len(attribute_paths)):
+        model.addCons(num_assignments[j] == quicksum(x[i, j] for i in range(num_phrases)))
+
+    model.optimize()
+
+    # Extract assignments
+    assigned_phrases = {attr: [] for attr in attribute_paths}
+    for i in range(num_phrases):
+        for j, attr in enumerate(attribute_paths):
+            if model.getVal(x[i, j]) > 0.5:
+                assigned_phrases[attr].append(i)
+
+    logger.debug(f"Assignments after BQP with hierarchy constraints: {assigned_phrases}")
+    return assigned_phrases
+
+def build_assigned_hierarchy(assigned_phrases: Dict[str, List[int]], phrases: List[str], hierarchy: Dict[str, Any]) -> Dict[str, Any]:
+    def recursive_build(hierarchy_node):
+        result = {}
+        for key, sub_attrs in hierarchy_node.items():
+            full_path = key if isinstance(hierarchy, dict) else f"{hierarchy}.{key}"
+            result[key] = {
+                "text": [phrases[i] for i in assigned_phrases.get(full_path, [])],
+                "sub_attributes": recursive_build(sub_attrs)
+            }
+        return result
+    return recursive_build(hierarchy)
+
+def flatten_hierarchy(hierarchy: Dict[str, Any], path: str = "") -> List[str]:
+    paths = []
+    for key, sub_attrs in hierarchy.items():
+        full_path = f"{path}.{key}" if path else key
+        paths.append(full_path)
+        paths.extend(flatten_hierarchy(sub_attrs, full_path))
+    return paths
+
+def create_disjoint_constraints(attribute_hierarchy: Dict[str, Any]) -> Dict[str, List[str]]:
+    disjoint_constraints = {}
+    def traverse_hierarchy(hierarchy, path=''):
+        for key, sub_attrs in hierarchy.items():
+            full_path = f"{path}.{key}" if path else key
+            if path not in disjoint_constraints:
+                disjoint_constraints[path] = []
+            disjoint_constraints[path].append(full_path)
+            traverse_hierarchy(sub_attrs, full_path)
+    traverse_hierarchy(attribute_hierarchy)
+    logger.debug(f"Disjoint constraints created: {disjoint_constraints}")
+    return disjoint_constraints
+
+def process_attributes(phrases: List[str], attribute_hierarchy: Dict[str, Any], attribute_examples: Dict[str, List[str]]) -> Dict[str, Any]:
+    flat_hierarchy = flatten_hierarchy(attribute_hierarchy)
+    similarities_per_attr = []
+    intra_similarity_matrices = []
+
+    for attr in flat_hierarchy:
+        examples = attribute_examples.get(attr, [])
+        if examples:
+            similarity = compute_cross_encoder_similarities(phrases, examples)
+            similarities_per_attr.append(similarity)
         else:
-            enhanced_embedding = attribute_name_embedding
+            similarities_per_attr.append(np.zeros(len(phrases)))
+        
+        intra_similarity_matrix = calculate_intra_similarity_matrix(phrases)
+        intra_similarity_matrices.append(intra_similarity_matrix)
 
-        enhanced_embeddings.append(enhanced_embedding)
+    disjoint_constraints = create_disjoint_constraints(attribute_hierarchy)
+    assignments = formulate_and_solve_bqp(similarities_per_attr, flat_hierarchy, disjoint_constraints, intra_similarity_matrices)
 
-    logger.info("Enhanced attribute embeddings computed.")
-    return enhanced_embeddings
+    return build_assigned_hierarchy(assignments, phrases, attribute_hierarchy)
 
-def compute_similarities(node_embeddings: List[np.ndarray], attribute_embeddings: List[np.ndarray]) -> np.ndarray:
-    """Compute similarities between nodes and attributes."""
-    logger.info("Computing similarities between sentences and attributes...")
-    similarities = np.array([
-        [cosine_similarity(node, attr)[0][0] for attr in attribute_embeddings] for node in node_embeddings
-    ])
-    logger.info("Similarity matrix computed.")
-    return similarities
-
-def formulate_and_solve_bqp(similarities: np.ndarray) -> Dict[int, int]:
-    """Formulate and solve the BQP problem using SCIP."""
-    logger.info("Formulating and solving the BQP problem...")
-    model_scip = Model("AttributeAssignment")
-    N, M = similarities.shape
-    x = {(i, j): model_scip.addVar(vtype='B', name=f"x_{i}_{j}") for i in range(N) for j in range(M)}
-
-    model_scip.setObjective(quicksum(similarities[i, j] * x[i, j] for i in range(N) for j in range(M)), 'maximize')
-    for i in range(N):
-        model_scip.addCons(quicksum(x[i, j] for j in range(M)) <= 1)
+def main(max_cards: int = 10):
+    pickle_files = ["../extraction_pkl_out/20241109_194651_credit_karma_dict.pkl"]
+    all_data = {}
     
-    model_scip.optimize()
-    
-    assignments = {i: j for i in range(N) for j in range(M) if model_scip.getVal(x[i, j]) > 0.5}
-    logger.info(f"BQP problem solved with {len(assignments)} assignments.")
-    return assignments
-
-def extract_attribute_texts(assignments: Dict[int, int], node_texts: List[str], attributes: List[str]) -> Dict[str, List[str]]:
-    """Extract attribute texts based on assignments."""
-    attribute_texts = {attr: [] for attr in attributes}
-    for i, j in assignments.items():
-        attribute_texts[attributes[j]].append(node_texts[i])
-    logger.info(f"Extracted following attribute text based on assignments for each card.")
-    return attribute_texts
-
-def process_pickle_file(pickle_path: str, tokenizer, bert_model) -> List[Dict[str, List[str]]]:
-    """Process each credit card entry in the pickle file and return attribute text mappings."""
-    data = load_data_from_pickle(pickle_path)
-    attributes = ['Annual Fee', 'Sign-on Bonus', 'Rewards', 'APR', 'Benefits', 'Credit Needed']
-    attribute_embeddings = compute_attribute_embeddings(attributes, attribute_examples, tokenizer, bert_model)
-    all_attribute_texts = []
-
-    for card_name, card_data in data.items():
-        logger.info(f"Processing card: {card_name}")
-        text_to_parse = card_data.unparsed_card_attributes if isinstance(card_data, CRSchema) else card_data.attributes
-        sentences = parse_text_to_sentences(text_to_parse)
-        node_embeddings = generate_sentence_embeddings(sentences, tokenizer, bert_model)
-        similarities = compute_similarities(node_embeddings, attribute_embeddings)
-        assignments = formulate_and_solve_bqp(similarities)
-        attribute_texts = extract_attribute_texts(assignments, sentences, attributes)
-        all_attribute_texts.append({card_name: attribute_texts})
-
-    logger.info(f"Processed {len(all_attribute_texts)} cards from {pickle_path}.")
-    return all_attribute_texts
-
-def main():
-    tokenizer, bert_model = initialize_nlp_models()
-    pickle_files = [
-        "../extraction_pkl_out/20241109_174232_credit_karma_dict.pkl",
-        "../extraction_pkl_out/20241109_002033_cardratings_dict.pkl"
-    ]
-    
-    all_attr_maps = []
     for file_path in pickle_files:
-        logger.info(f"Starting processing for file: {file_path}")
-        all_attr_maps.extend(process_pickle_file(file_path, tokenizer, bert_model))
-    
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_filename = f"processed_credit_cards_{timestamp}.json"
-    
-    with open(output_filename, 'w') as outfile:
-        json.dump(all_attr_maps, outfile, indent=4, default=str)
-    
-    logger.info(f"Processing complete. Results saved to {output_filename}")
+        data = load_data_from_pickle(file_path)
+        random_sample = random.sample(list(data.items()), min(max_cards, len(data)))
+        
+        for card_name, card_data in random_sample:
+            text = card_data.unparsed_card_attributes if isinstance(card_data, CRSchema) else card_data.attributes
+            assigned_attributes = process_attributes(parse_text_with_spacy(text), attribute_hierarchy, attribute_examples)
+            all_data[card_name] = assigned_attributes
+
+    with open("../json_output/credit_card_data.json", 'w') as outfile:
+        json.dump(all_data, outfile, indent=4)
 
 if __name__ == "__main__":
-    main()
+    main(max_cards=10)

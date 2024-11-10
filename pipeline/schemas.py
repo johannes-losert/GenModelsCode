@@ -178,36 +178,25 @@ def get_issuer(card_name: str):
         return best_issuer
     return "Unknown"
 
-# Data classes using pydantic
+def get_primary_reward_unit(reward_category_map):
+    if not reward_category_map:
+        return RewardUnit.UNKNOWN
+    reward_unit_counts = defaultdict(int)
+    for relation in reward_category_map:
+        reward_unit_counts[relation.reward_unit] += 1
+    primary_reward_unit = max(reward_unit_counts, key=reward_unit_counts.get)
+    return primary_reward_unit
 
 class RewardCategoryThreshold(BaseModel):
     on_up_to_purchase_amount_usd: float
     per_timeframe_num_months: int
     fallback_reward_amount: float
 
-    @validator('on_up_to_purchase_amount_usd', 'fallback_reward_amount')
-    def amounts_must_be_positive(cls, v):
-        if v < 0:
-            raise ValueError('Amount must be positive')
-        return v
-
-    @validator('per_timeframe_num_months')
-    def months_must_be_positive(cls, v):
-        if v < 0:
-            raise ValueError('Timeframe must be positive')
-        return v
-
 class RewardCategoryRelation(BaseModel):
     category: Union[PurchaseCategory, str]  # Adjusted to allow string for simplicity
     reward_unit: RewardUnit
     reward_amount: float
     reward_threshold: Optional[RewardCategoryThreshold] = None
-
-    @validator('reward_amount')
-    def amount_must_be_reasonable(cls, v):
-        if v < 0 or v > 100:
-            raise ValueError('Amount must be positive and less than 100 to be reasonable')
-        return v
 
 class ConditionalSignOnBonus(BaseModel):
     purchase_type: Union[PurchaseCategory, str]  # Adjusted to allow string
@@ -216,46 +205,13 @@ class ConditionalSignOnBonus(BaseModel):
     reward_type: RewardUnit
     reward_amount: float
 
-    @validator('condition_amount', 'reward_amount')
-    def amounts_must_be_positive(cls, v):
-        if v < 0:
-            raise ValueError('Amount must be positive')
-        return v
-
-    @validator('timeframe', pre=True)
-    def parse_timeframe(cls, v):
-        if isinstance(v, (int, float)):
-            return timedelta(days=30 * v)
-        elif isinstance(v, timedelta):
-            return v
-        else:
-            raise ValueError('Invalid timeframe')
-
 class APR(BaseModel):
     apr: float
     type: APRType
 
-    @validator('apr')
-    def apr_must_be_reasonable(cls, v):
-        if v < 0 or v > 100:
-            raise ValueError('APR must be between 0 and 100')
-        return v
-
 class AnnualFee(BaseModel):
     fee_usd: float
     waived_for: int
-
-    @validator('fee_usd')
-    def fee_must_be_non_negative(cls, v):
-        if v < 0:
-            raise ValueError('Fee must be non-negative')
-        return v
-
-    @validator('waived_for')
-    def waived_for_must_be_non_negative(cls, v):
-        if v < 0:
-            raise ValueError('Waived for must be non-negative')
-        return v
 
 class CreditCardSchema(BaseModel):
     name: str
@@ -268,14 +224,3 @@ class CreditCardSchema(BaseModel):
     annual_fee: Optional[AnnualFee] = None
     primary_reward_unit: RewardUnit
     keywords: List[CreditCardKeyword]
-
-# Function to get primary reward unit
-
-def get_primary_reward_unit(reward_category_map):
-    if not reward_category_map:
-        return RewardUnit.UNKNOWN
-    reward_unit_counts = defaultdict(int)
-    for relation in reward_category_map:
-        reward_unit_counts[relation.reward_unit] += 1
-    primary_reward_unit = max(reward_unit_counts, key=reward_unit_counts.get)
-    return primary_reward_unit
